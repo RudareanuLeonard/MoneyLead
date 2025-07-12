@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -14,10 +14,10 @@ type TestMessage struct {
 }
 
 type UserLeaderboard struct {
-	id          int     `json:"id"`
-	rank        int     `json:"rank"`
-	name        string  `json:"name"`
-	sum_donated float64 `json:"sum_donated"`
+	Id         int     `json:"id"`
+	Rank       int     `json:"rank"`
+	Name       string  `json:"name"`
+	SumDonated float64 `json:"sum_donated"`
 }
 
 func getLeaderboardTopFive() [FIVE]UserLeaderboard { // after i have the db this should be created from db (sorted desc by sum_donated)
@@ -36,12 +36,9 @@ func homePage(writer http.ResponseWriter, r *http.Request) { //http.ResponseWrit
 
 	var leaderboardTopFive [FIVE]UserLeaderboard = getLeaderboardTopFive()
 
-	err := json.NewEncoder(writer).Encode(leaderboardTopFive)
-	if err != nil {
-		log.Println(err)
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
-	}
-	fmt.Fprintf(writer, "This is the home page")
+	html_template := template.Must(template.ParseFiles("../frontend/index.html"))
+	log.Println(html_template.Execute(writer, leaderboardTopFive))
+
 }
 
 func testPage(writer http.ResponseWriter, r *http.Request) { //http.ResponseWriter = send data to HTTP client; http.Request = represent the client

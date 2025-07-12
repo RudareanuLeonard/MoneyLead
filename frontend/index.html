@@ -9,22 +9,23 @@
   </style>
 </head>
 <body>
-  <h1>Message from backend:</h1>
-  <p id="message">Loading...</p>
+  <br><br><br><br>
+  <p>TEST</p>
+  <p></p>
+  <br>
+  <p></p>
+  
+<ul>
+  {{range .}}
+    <li>{{.Name}} donated {{.SumDonated}}</li>
+  {{end}}
+</ul>
 
-  <script>
-    // This runs as soon as the page loads
-    window.addEventListener("DOMContentLoaded", () => {
-      fetch('/')
-        .then(res => res.json())
-        .then(data => {
-            console.log("Fetched data:", data); // NOW this will show something
-            document.getElementById('message').textContent = JSON.stringify(data, null, 2);
-        })
-        .catch(err => {
-          document.getElementById('message').textContent = 'Error: ' + err;
-        });
-    });
-  </script>
+
+
+
+
+  <!-- js scripts -->
+   <script src="index.js"></script>
 </body>
 </html>
